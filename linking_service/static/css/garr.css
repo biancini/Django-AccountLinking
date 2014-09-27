@@ -1,0 +1,171 @@
+html, body { height:100%; overflow:auto; padding: 0px; margin: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+body { line-height:1.5; }
+
+a {
+	color: #413839;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h3 {
+	color: white;
+	font-size: 24pt;
+	margin: 0px;
+	padding-top: 140px;
+	padding-bottom: 0px;
+}
+
+#header {
+	background: -moz-linear-gradient(center top , rgb(53, 83, 122) 0%, rgb(29, 45, 66) 100%) repeat scroll 0% 0% transparent repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(
+		linear,
+		center top,
+		center top,
+		color-stop(0, #35537A),
+		color-stop(1, #1D2D42)
+	) repeat scroll 0% 0% transparent;
+	background: -o-linear-gradient(center top, #35537A 0%, #1D2D42 100%) repeat scroll 0% 0% transparent;
+	background: -moz-linear-gradient(center top, #35537A 0%, #1D2D42 100%) repeat scroll 0% 0% transparent;
+	background: -webkit-linear-gradient(center top, #35537A 0%, #1D2D42 100%) repeat scroll 0% 0% transparent;
+	background: -ms-linear-gradient(center top, #35537A 0%, #1D2D42 100%) repeat scroll 0% 0% transparent;
+	background: linear-gradient(to center top, #35537A 0%, #1D2D42 100%) repeat scroll 0% 0% transparent;
+	text-align: center;
+	height: 360px;
+	position:absolute; 
+	top:0px;
+	left:0px;
+	overflow:auto;
+	width: 100%;
+}
+
+.subheader {
+	margin-top: 1em;
+	display:inline-block;
+}
+
+.logo {
+	float: left;
+	text-align: right;
+}
+
+.welcome {
+	float: left;
+	text-align: left;
+	color: white;
+	margin-left: 2em;
+	height: 320px;
+}
+
+
+#access {
+	text-align: center;
+}
+
+#access ul {
+	vertical-align: middle;
+	padding-bottom: 15px;
+	list-style-type: none;
+	list-style-position:inside;
+	padding-left: 0px;
+}
+
+#access li {
+	text-align: left;
+	display: inline-block;
+	color: #413839;
+	padding-left: 40px;
+	padding-right: 40px;
+	width: 180px;
+	list-style-type: none;
+	list-style-position: inside;
+	margin: 0px;
+	vertical-align: top;
+}
+
+#access td {
+	padding: 20px;
+}
+
+#access tr {
+	text-align: center;	
+}
+
+#access p {
+	color: #413839;
+}
+
+#footer {
+	background-color: #F0F0F0;
+	width: 100%;
+	text-align: center;
+	padding: 0px;
+	margin: 0px;
+	margin-top: 5px;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	overflow:hidden;
+}
+
+#footer a {
+	line-height:4em;
+}
+
+#content {
+	position: relative;
+	width: 50%;
+	top: 360px;
+	left: 25%;
+	bottom: 70px;
+	overflow: auto;
+	text-align: center;
+}
+
+.box {
+	text-align: left;
+	width: 852px;
+	margin: auto;
+	line-height: 1.5;
+	margin-top: 1em;
+	border: 1px solid #AAA;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.error {
+	text-align: left;
+	width: 852px;
+	margin: auto;
+	font-family:"Times New Roman",Times,serif;
+	font-size:1.5em;
+	line-height: 1.5;
+	margin-top: 1em;
+	border: 1px solid #AAA;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+div.linkablediv {
+    position: relative;
+}
+ 
+div.linkablediv a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none; /* No underlines on the link */
+    z-index: 10; /* Places the link above everything else in the div */
+    background-color: #FFF; /* Fix to make div clickable in IE */
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
+
+.smalltext {
+	font-size : 0.9em;
+}

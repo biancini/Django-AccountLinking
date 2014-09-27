@@ -14,16 +14,14 @@ MANAGERS = ADMINS
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__)) 
 
-BASE_ROOT = '/al'
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',   # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'django',                       # Or path to database file if using sqlite3.
-        'USER': 'django',                       # Not used with sqlite3.
-        'PASSWORD': 'ciaodjango',               # Not used with sqlite3.
-        'HOST': 'localhost',                    # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',                         # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',   # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'account_linking',                   # Or path to database file if using sqlite3.
+        'USER': 'dbuser',                            # Not used with sqlite3.
+        'PASSWORD': 'ciaoidem',                      # Not used with sqlite3.
+        'HOST': 'localhost',                         # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                                  # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -71,7 +69,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '%s/static/' % BASE_ROOT
+STATIC_URL = '/static/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
@@ -125,14 +123,13 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    #'oidc_django.backends.OpenIdUserBackend',
-    #'shib_django.backends.ShibbolethUserBackend',
-    'backends.AccountLinkingUserBackend',
+    'oidc_django.backends.OpenIdUserBackend',
+    'shib_django.backends.ShibbolethUserBackend',
 )
 
-LOGIN_URL = '%s/login' % BASE_ROOT
+LOGIN_URL = '/login'
 
-ROOT_URLCONF = 'account_linking.urls'
+ROOT_URLCONF = 'linking_service.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, "templates"),
@@ -155,7 +152,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 )
 
-DJANGO_SETTINGS_MODULE = 'account_linking.settings'
+DJANGO_SETTINGS_MODULE = 'linking_service.settings'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -196,5 +193,3 @@ LOGGING = {
         },
     }
 }
-
-ACCOUNT_LINKING_SERVICE_URL = "https://account-linking.mib.garr.it/ls/api/get_userid?authid=%s"

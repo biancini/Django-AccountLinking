@@ -3,9 +3,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.backends import ModelBackend
 
-class ShibbolethUserBackend(ModelBackend):
+class OpenIdUserBackend(ModelBackend):
     """
-    This backend is to be used in conjunction with the ``ShibbolethUserMiddleware``
+    This backend is to be used in conjunction with the ``OpenIdUserMiddleware``
     found in the middleware module of this package, and is used when the server
     is handling authentication outside of Django.
 
@@ -18,7 +18,7 @@ class ShibbolethUserBackend(ModelBackend):
     # Create a User object if not already in the database?
     create_unknown_user = True
 
-    def authenticate(self, shib_meta):
+    def authenticate(self, userinfo):
         """
         To authenticate engage the OpenId Connect login procedure.
         The username returned by this process is considered trusted.  This
@@ -28,9 +28,10 @@ class ShibbolethUserBackend(ModelBackend):
         Returns None if ``create_unknown_user`` is ``False`` and a ``User``
         object with the given username is not found in the database.
         """
-        if not shib_meta: return
+        if not userinfo: return
         user = None
-        username = self.clean_username(shib_meta['eppn'])
+        username = self.clean_username(userinfo['sub'])
+
         UserModel = get_user_model()
 
         # Note that this could be accomplished in one try-except clause, but
@@ -41,7 +42,7 @@ class ShibbolethUserBackend(ModelBackend):
                 UserModel.USERNAME_FIELD: username,
             })
             if created:
-                user = self.configure_user(user, shib_meta)
+                user = self.configure_user(user, userinfo)
         else:
             try:
                 user = UserModel.objects.get_by_natural_key(username)
@@ -58,14 +59,14 @@ class ShibbolethUserBackend(ModelBackend):
         """
         return username
 
-    def configure_user(self, user, shib_meta):
+    def configure_user(self, user, userinfo):
         """
         Configures a user after creation and returns the updated user.
 
         By default, returns the user unmodified.
         """
-        user.__setattr__('first_name', shib_meta['givenName'].split(";")[0])
-        user.__setattr__('last_name', shib_meta['sn'].split(";")[0])
-        user.__setattr__('email', shib_meta['email'].split(";")[0])
+        user.__setattr__('first_name', userinfo['given_name'])
+        user.__setattr__('last_name', userinfo['last_name'])
+        user.__setattr__('email', userinfo['email'])
         user.save()
         return user

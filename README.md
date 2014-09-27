@@ -71,7 +71,7 @@ To install this example:
 
 * Retrieve the code of account_linking from the GitHub Repository:
   ```
-  cd /tmp ; git clone https://github.com/biancini/Django-AccountLinking.git account_linking
+  cd /tmp ; git clone https://github.com/biancini/Django-AccountLinking.git 
   ```
 
 * Copy the directory “account_linking” into “/var/www”:

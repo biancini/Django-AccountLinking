@@ -1,12 +1,11 @@
-from account_linking.oidc_django.middleware import OpenIdMiddleware
-from account_linking.shib_django.middleware import ShibbolethMiddleware
-from account_linking.models import LastLogin
+from linking_service.oidc_django.middleware import OpenIdMiddleware
+from linking_service.shib_django.middleware import ShibbolethMiddleware
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime
 
 class AccountLinkingMiddleware(object):
     """
-    middleware for utilizing Account Linking authentication.
+    ddleware for utilizing Account Linking authentication.
     """
 
     def process_request(self, request):
@@ -37,17 +36,6 @@ class AccountLinkingMiddleware(object):
                 middleware.process_request(request)
 
                 if request.user.is_authenticated():
-                    try:
-                        login = LastLogin.objects.get(username=request.user.username)
-                        request.session["login_date"] = str(login.login_date)
-                        request.session["login_method"] = login.login_method
-                    except ObjectDoesNotExist:
-                        login = LastLogin(username=request.user.username, 
-                                          login_date=datetime.now(),
-                                          login_method=request.session["login_with"])
-                        request.session["login_date"] = "NEVER"
-                        request.session["login_method"] = "NONE"
-
                     login.login_date=datetime.now()
                     login.login_method=request.session["login_with"]
                     login.save()

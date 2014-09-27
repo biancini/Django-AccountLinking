@@ -3,13 +3,13 @@
 	<head>
 		<title>Account Linking</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="${BASE_ROOT}/static/css/garr.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="/static/css/garr.css" type="text/css" media="screen" />
 	</head>
 	<body>
 		<div id="header">
 			<div class="subheader">
 				<div class="logo">
-					<img src="${BASE_ROOT}/static/images/service-button.png" width="300" height="300" alt="Account Linking" />
+					<img src="/static/images/service-button.png" width="300" height="300" alt="Account Linking" />
 				</div>
 				<div class="welcome">
 					<h3>Account linking</h3>
@@ -20,7 +20,6 @@
 		<div id="content">
 			<h1>Welcome ${user.first_name} ${user.last_name}!!!!</h1>
                         <h2>
-				You account linking userid is ${user.username}.<br/>
 				You last login to this service was<br/>
                                 on ${login_date}<br/>
 				with ${login_method} credentials.

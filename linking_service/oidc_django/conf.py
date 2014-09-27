@@ -1,5 +1,4 @@
-from django.conf import settings
-BASE = "https://account-linking.mib.garr.it%s/oidc/" % settings.BASE_ROOT
+BASE = "https://account-linking.mib.garr.it/oidc/"
 
 # If BASE is https these has to be specified
 SERVER_KEY = ''

@@ -5,7 +5,7 @@ from django.contrib.auth.backends import ModelBackend
 
 class ShibbolethUserBackend(ModelBackend):
     """
-    This backend is to be used in conjunction with the ``ShibbolethUserMiddleware``
+    This backend is to be used in conjunction with the ``OpenIdUserMiddleware``
     found in the middleware module of this package, and is used when the server
     is handling authentication outside of Django.
 

@@ -5,11 +5,11 @@ path = "/var/www/"
 if path not in sys.path:
     sys.path.append(path)
 
-path = "/var/www/account_linking"
+path = "/var/www/linking_service"
 if path not in sys.path:
     sys.path.append(path)
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "account_linking.settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "linking_service.settings"
 
 from oidc_django import oidc, conf
 from django.core.handlers.wsgi import WSGIHandler

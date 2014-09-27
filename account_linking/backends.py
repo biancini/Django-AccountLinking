@@ -2,10 +2,14 @@ from __future__ import unicode_literals
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.auth.backends import ModelBackend
+from account_linking.oidc_django.backends import OpenIdUserBackend
+from account_linking.shib_django.backends import ShibbolethUserBackend
+from urllib2 import urlopen, URLError
+import json
 
-class ShibbolethUserBackend(ModelBackend):
+class AccountLinkingUserBackend(ModelBackend):
     """
-    This backend is to be used in conjunction with the ``ShibbolethUserMiddleware``
+    This backend is to be used in conjunction with the ``AccountLinkingUserMiddleware``
     found in the middleware module of this package, and is used when the server
     is handling authentication outside of Django.
 
@@ -18,7 +22,7 @@ class ShibbolethUserBackend(ModelBackend):
     # Create a User object if not already in the database?
     create_unknown_user = True
 
-    def authenticate(self, shib_meta):
+    def authenticate(self, shib_meta=None, userinfo=None):
         """
         To authenticate engage the OpenId Connect login procedure.
         The username returned by this process is considered trusted.  This
@@ -28,9 +32,21 @@ class ShibbolethUserBackend(ModelBackend):
         Returns None if ``create_unknown_user`` is ``False`` and a ``User``
         object with the given username is not found in the database.
         """
-        if not shib_meta: return
-        user = None
-        username = self.clean_username(shib_meta['eppn'])
+        if shib_meta:
+            backend = ShibbolethUserBackend()
+            backend.create_unknown_user = False
+            user = backend.authenticate(shib_meta=shib_meta)
+        elif userinfo:
+            backend = OpenIdUserBackend()
+            backend.create_unknown_user = False
+            user = backend.authenticate(userinfo=userinfo)
+        else:
+            backend = None
+            user = None
+
+        if not backend or not user: return
+        user_meta = self.get_userid_from_account_linking_service(user.username)
+        username = self.clean_username(user_meta['id'])
         UserModel = get_user_model()
 
         # Note that this could be accomplished in one try-except clause, but
@@ -41,7 +57,8 @@ class ShibbolethUserBackend(ModelBackend):
                 UserModel.USERNAME_FIELD: username,
             })
             if created:
-                user = self.configure_user(user, shib_meta)
+                user = backend.configure_user(user, shib_meta or userinfo)
+                user = self.configure_user(user, user_meta)
         else:
             try:
                 user = UserModel.objects.get_by_natural_key(username)
@@ -58,14 +75,24 @@ class ShibbolethUserBackend(ModelBackend):
         """
         return username
 
-    def configure_user(self, user, shib_meta):
+    def configure_user(self, user, user_meta):
         """
         Configures a user after creation and returns the updated user.
 
         By default, returns the user unmodified.
         """
-        user.__setattr__('first_name', shib_meta['givenName'].split(";")[0])
-        user.__setattr__('last_name', shib_meta['sn'].split(";")[0])
-        user.__setattr__('email', shib_meta['email'].split(";")[0])
+        user.__setattr__('first_name', user_meta['name'])
+        user.__setattr__('last_name', user_meta['surname'])
+        user.__setattr__('email', user_meta['mail'])
         user.save()
         return user
+
+    def get_userid_from_account_linking_service(self, username):
+        url = "https://account-linking.mib.garr.it/ls/api/get_userid?authid=%s" % username
+        try:
+            page = urlopen(url)
+        except URLError, e:
+            print "Error while opening account linking service page: %s" % e
+            return None
+        else:
+	    return json.loads(page.read())
